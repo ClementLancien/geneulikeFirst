@@ -1,0 +1,901 @@
+<link type="text/css" rel="stylesheet" href="bower_components/handsontable/handsontable/dist/handsontable.full.min.css">
+<link type="text/css" rel="stylesheet" href="bower_components/font-awesome/css/font-awesome.min.css" >
+
+
+
+<link rel="stylesheet" type="text/css" href="bower_components/angular-ui-select/dist/select.css">
+
+
+<!-- <link rel="stylesheet prefetch" href="https://cdnjs.cloudflare.com/ajax/libs/chosen/1.4.2/chosen.css">
+ -->
+
+  <link rel="stylesheet prefetch" href="https://cdnjs.cloudflare.com/ajax/libs/chosen/1.4.2/chosen.css">
+<!--  <script src="https://cdnjs.cloudflare.com/ajax/libs/chosen/1.4.2/chosen.jquery.js"></script>
+ --><!--  <link type="text/css" rel="stylesheet" href="styles/chosen.css">
+ -->
+
+<script rel="stylesheet prefetch" src="scripts/chosen.jquery.js"></script>
+
+<link href="styles/ngDialog-theme-flat.css" rel="stylesheet" type="text/css">
+
+
+
+
+<link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap3-dialog/1.34.7/css/bootstrap-dialog.min.css" rel="stylesheet" type="text/css" />
+<link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+
+<style>
+@import url(//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css);
+hr {
+  height: 2px;
+  margin-left: 15px;
+  margin-top:25px;
+  margin-bottom: 50px;
+}
+.hr-warning{
+  background-image: -webkit-linear-gradient(left, rgba(210,105,30,.8), rgba(210,105,30,.6), rgba(0,0,0,0));
+}
+.hr-success{
+  background-image: -webkit-linear-gradient(left, rgba(15,157,88,.8), rgba(15, 157, 88,.6), rgba(0,0,0,0));
+}
+.hr-primary{
+  background-image: -webkit-linear-gradient(left, rgba(66,133,244,.8), rgba(66, 133, 244,.6), rgba(0,0,0,0));
+}
+.hr-danger{
+  background-image: -webkit-linear-gradient(left, rgba(244,67,54,.8), rgba(244,67,54,.6), rgba(0,0,0,0));
+}
+
+/* Handsontable : For chosen: single and multiple*/
+.chosen-container .chosen-drop {
+  max-height: 150px;
+  overflow-y: auto;
+}
+.chosen-container-single .chosen-search{
+    width:75%;
+}
+
+/* Ontology : vertical scroll typeahead*/
+#scrollable-dropdown-menu-typeahead .dropdown-menu {
+  max-height: 150px;
+  overflow-y: auto;
+}
+
+
+/* Table Error Report*/
+.table-fixed thead {
+  width: 100%;
+  text-align:center;
+  vertical-align: middle;
+}
+.table-fixed  th {
+  text-align:center;
+}
+
+.table-fixed tbody {
+  height: 495px;
+  overflow-y: auto;
+  width: 100%;
+}
+.table-fixed thead, .table-fixed tbody, .table-fixed tr, .table-fixed td, .table-fixed th {
+  display: block;
+}
+.table-fixed tbody td, .table-fixed thead > tr > tr > th {
+  float: left;
+  border-bottom-width: 0;
+  text-align:center;
+  vertical-align: middle;
+}
+
+
+</style>
+
+
+
+
+<!-- <div class='well'>
+
+  <h1 style="text-align:center;">Upload your project here</h1>
+  <hr class="hr-primary" > 
+
+</div> -->
+
+<div class="wellDimension" id="stepProgressBar">
+  <div class="row" ng-show='true'>
+    <ul class="progressbar">
+      <li ng-class="stepProgressBar_UploadData">Upload Data</li>
+      <!-- <li class="active">Upload Data</li> -->
+      <li ng-class="stepProgressBar_CheckData">Check Data</li>
+      <li ng-class="stepProgressBar_UploadLists">Upload Lists Files</li>
+      <li ng-class="stepProgressBar_CheckLists">Check Lists Files</li>
+    </ul>
+  </div>
+</div>
+
+<div class='well' >
+  <div ng-show="!hasData" class="panel panel-default">
+      <div class="panel-heading">
+          Upload your projects here
+      </div>
+      <div class="panel-body">
+          <div class="row">
+            <a href="" ngf-select="signature_upload($file)" accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" style="text-align: center;">
+              <div class="col-md-2" style="margin-top: 50px;vertical-align: middle;" >
+                <i class="fa fa-file fa-5x" aria-hidden="true" style="margin-top: 10px;"></i>
+                <h2>Create new</h2>
+              </div>
+            </a>
+            <div class="col-md-10">
+              <p>Download the last template for data upload.<br> Use the v.04 template version. All other versions are deprecated</p>
+              <table class="table table-bordered table-hover table-striped">
+                <tr>
+                  <th>Description</th>
+                  <th>File</th>
+                </tr>
+                <tr>
+                    <td>GeneULike update project template</td>
+                    <td><a ng-href="Template/NewCreate.xlsx">GeneULike_template_v0.4</a></td>
+                </tr>
+              </table>
+            </div>
+          </div>
+      </div>
+  </div>
+
+  <div ng-show="uploadList">
+    <div ng-show="hasData" >
+
+      <div class="row">
+
+        <div class="col-xs-3">
+            <div class="btn btn-success fileinput-button" ngf-select="signature_upload($file)" ngf-multiple="false" ng-click="newData()" accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet">
+              <i class="glyphicon glyphicon-plus"></i>
+              <span>Load New File</span>
+            </div>
+        </div>
+
+        <div class="col-xs-6 text-center">
+          
+            <a ng-click="download()" class="btn">
+                        <span class="glyphicon glyphicon-export"></span>Save and Export</a>
+          
+
+<!--               <button ng-click="download()"><i class ="glyphicon glyphicon-export"></i>Save and Export</button>
+ -->    </div>
+        
+        <div class="col-xs-3">
+          <div class="btn btn-primary btn pull-right" ng-click="checkData()" >
+            <i class="glyphicon glyphicon-refresh"></i>
+            <span>Check Data</span>
+          </div>
+        </div>
+
+      </div>
+      
+      <br>
+
+        <ul class="nav nav-tabs">
+          <li class="active"><a data-toggle="tab" href="#project" target="_self" ng-click="showProjects()">Projects ({{projects_number}})</a></li>
+          <li><a data-toggle="tab" href="#strategy"  target="_self" ng-click="showStrategies()">Strategies ({{strategies_number}})</a></li>
+          <li><a data-toggle="tab" href="#list" target="_self" ng-click="showLists()">Lists ({{lists_number}})</a></li>
+          <li><a data-toggle="tab" href="#strategy" ng-show="report" target="_self" ng-click="showReport()">Error Report ({{critical}})</a></li>
+        </ul>
+
+      <br>
+
+      <div style="width:100%;overflow:auto;"">
+        <div id="excelTable" ng-show ="showExcelTable" class="hot handsontable htColumnHeaders htRowHeaders" data-originalstyle="overflow: hidden;"></div>
+      </div>
+
+      <div ng_show ="!showExcelTable">
+
+        <div class="row" ng-show='message'>
+          <div class="col-xs-12">
+            <p>{{message}}</p>
+          </div>
+        </div>
+
+        <div class="row" ng-show='!message'>
+          <div class="col-xs-12">
+            <table class="table">
+              <thead>
+                <tr>
+                  <th>Sheet</th>
+                  <th>Avertissement</th>
+                  <th>Error Report</th>
+                </tr>
+              </thead>
+              <tbody>
+              <!-- Error: ngRepeat:dupes Duplicate Key in Repeater so we use track by $index -->
+
+                <tr class="danger" ng-repeat="danger in data_project_error.Critical track by $index">
+                  <td>Project</td>
+                  <td>Critical</td>
+                  <td>{{danger}}</td>
+                </tr>      
+                <tr class="danger" ng-repeat="danger in data_strategy_error.Critical track by $index">
+                  <td>Strategy</td>
+                  <td>Critical</td>
+                  <td>{{danger}}</td>
+                </tr>    
+                <tr class="danger" ng-repeat="danger in data_list_error.Critical track by $index">
+                  <td>List</td>
+                  <td>Critical</td>
+                  <td>{{danger}}</td>
+                </tr>
+
+                <tr class="warning" ng-repeat="danger in data_project_error.Warning track by $index">
+                  <td>Project</td>
+                  <td>Warning</td>
+                  <td>{{danger}}</td>
+                </tr>      
+                <tr class="warning" ng-repeat="danger in data_strategy_error.Warning track by $index">
+                  <td>Strategy</td>
+                  <td>Warning</td>
+                  <td>{{danger}}</td>
+                </tr>    
+                <tr class="warning" ng-repeat="danger in data_list_error.Warning track by $index">
+                  <td>List</td>
+                  <td>Warning</td>
+                  <td>{{danger}}</td>
+                </tr>
+
+                <tr class="info" ng-repeat="danger in data_project_error.Info track by $index">
+                  <td>Project</td>
+                  <td>Info</td>
+                  <td>{{danger}}</td>
+                </tr>      
+                <tr class="info" ng-repeat="danger in data_strategy_error.Info track by $index">
+                  <td>Strategy</td>
+                  <td>Info</td>
+                  <td>{{danger}}</td>
+                </tr>    
+                <tr class="info" ng-repeat="danger in data_list_error.Info track by $index">
+                  <td>List</td>
+                  <td>Info</td>
+                  <td>{{danger}}</td>
+                </tr>
+
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div> 
+    </div> 
+  </div>
+
+
+<!-- Filename Upload after No Critical Error Detected in project, Lists and Strategies -->
+  <div ng-show="!uploadList">
+    <div class="row" >
+  <!-- https://github.com/danialfarid/ng-file-upload -->
+      <div class="col-xs-6">
+        <div class="btn btn-success fileinput-button" accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, text/plain" ngf-select="addFiles($files)" ngf-multiple="true"  >
+          <i class="glyphicon glyphicon-plus"></i>
+          <span>Add Files</span>
+        </div>
+      </div>
+
+      <div class="col-xs-6">
+        <div class="btn btn-primary btn pull-right" ng-click="checkFile()" >
+          <i class="glyphicon glyphicon-refresh"></i>
+          <span>Check File</span>
+        </div>
+      </div>
+    </div>
+    <br>
+    <div class="row" >
+
+      <div class="col-xs-12">
+        <div class="table-responsive">
+             
+          <table class="table table-hover table-striped table-condensed tasks-table">
+              
+            <thead class="thead-inverse">
+              <tr>
+                  <th class="text-center">#</th>
+                  <th class="text-center">List ID</th>
+                  <th class="text-center">Filename</th>
+                  <th class="text-center">Filename Required</th>
+                  <th class="text-center">Status</th>
+                  <th class="text-center">Message</th>
+                  <th class="text-center">Action</th>
+              </tr>
+            </thead>
+            <tbody>
+
+              <tr ng-repeat="(nameRequired,information) in objectFiles">
+                <td class="text-center">{{ $index+1 }}</td>
+                <td class="text-center">{{ information.identifiant }}</td>
+                <td class="text-center">{{ information.name }}</td>
+                <td class="text-center">{{ nameRequired }}</td>
+                <td class="text-center">
+                    <span ng-if="information.status=='success'"><i class="glyphicon glyphicon-ok"></i></span>
+                    <span ng-if="information.status=='waiting'"><i class="glyphicon glyphicon-ban-circle"></i></span>
+                    <span ng-if="information.status=='warning'"><i class="glyphicon glyphicon-remove"></i></span>
+                </td>
+                <td class="text-center">{{ information.msg }}</td>
+                <td  class="text-center" nowrap>
+                  <button type="button" class="btn btn-danger btn-xs" ng-click="remove(nameRequired)">
+                      <span class="glyphicon glyphicon-trash"></span> Remove
+                  </button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div ng-show="hasData" >
+  <div class="well">
+    <div class="row">
+
+      <div class ="col-xs-3 "><button type="button" class="btn btn-default btn pull-left" ng-show="!uploadList" ng-click="previous()">Previous</button></div>
+      <div class = "col-xs-6 text-center">
+        <button type="button" class="btn btn-warning" ng-if ="!canSubmit.boolean" disabled="true"  ng-show="!uploadList">Submit</button>
+        <button type="button" class="btn btn-warning" ng-if ="canSubmit.boolean"  ng-show="!uploadList" ng-click="submit()">Submit</button>
+      </div>
+      <div class = "col-xs-3 ">
+        <button type="button" class="btn btn-default btn pull-right" ng-if="hasError.boolean" disabled="true" ng-show="uploadList" >Next</button>
+        <button type="button" class="btn btn-default btn pull-right" ng-if="!hasError.boolean" ng-show="uploadList" ng-click="next()">Next</button>
+
+        
+
+      </div>
+    </div>
+  </div>   
+</div>
+
+
+
+<!-- !!!!!!!!!!!!!!!!!!!!! Template To Add Ontology For Project, Lists, Strategies !!!!!!!!!!!!!!!!!!!!!-->
+
+
+
+<script type="text/ng-template" id="Ontology">
+<!--   <div class="ngdialog-message"> -->
+  <div ng-show="viewOntology">
+    <div class="row">
+      <div class="col-xs-3"></div>
+      <div class="col-xs-6">
+         <h2> <i class="fa fa-search text-center" aria-hidden="true"></i>Ontology Search</h2>
+      </div>
+    </div>
+    <br>
+    <div ng-if="danger" class="alert alert-danger">
+        {{danger}}
+        <br>
+    </div>
+    <div ng-if="success" class="alert alert-success">
+        {{success}}
+        <br>
+    </div>
+    <div ng-if="warning" class="alert alert-warning">
+        {{warning}}
+        <br>
+    </div>
+
+    <div class= "row">
+      <div class="form-group">
+        <label class="control-label col-xs-4" for="select_database_for_ontology_search_(bioportal)" >Select Database</label>
+        <div class="col-xs-8">
+          <div class="input-group">
+            <ui-select  ng-model="ontoDatabaseSelected.value"  theme="bootstrap" ng-change="onDatabaseChange()" >
+              <ui-select-match placeholder="Select or search a database in the list">{{ontoDatabaseSelected.value.name}}</ui-select-match>
+              <ui-select-choices  repeat="item in (ontologyDatabaseArray | filter: $select.search) track by item.id">
+                <span   ng-bind-html="item.name | highlight: $select.search"></span>
+              </ui-select-choices>
+            </ui-select>
+            <span class="input-group-btn">
+              <button type="button" ng-click="removeOntoDatabaseSelected()" class="btn btn-default">
+                <span class="glyphicon glyphicon-trash"></span>
+              </button>
+            </span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class= "row">
+      <div class="form-group">
+        <div ng-if="ontoDatabaseSelected.value.name" class="form-group">
+          <label class="control-label col-xs-4" for="first_name">Search Term</label>
+          <div class="col-xs-8">
+            <div id="scrollable-dropdown-menu-typeahead">
+              <input  class="form-control" id="organism_vivo" type="text" ng-model="selectOnto" placeholder="Species"
+                ng-change="get_onto()" typeahead-min-length="4" typeahead-on-select="selected_tissue($item, $model,label)" typeahead=" item.prefLabel for item in search_result | filter:$viewValue" typeahead-loading="loading" 
+                class="form-control">
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <br>
+
+    <div class= "row">
+      <div class="col-xs-12">
+        <div ng-disabled="!onto" ng-click="addOntology()" class ="btn btn-success btn-block" >
+          <i class="glyphicon glyphicon-plus"></i>
+          <span>Add</span>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <div ng-show="!viewOntology">
+
+    <div class="row">
+      <div class="col-xs-3"></div>
+      <div class="col-xs-7">
+         <h2><i class="fa fa-eye text-center" aria-hidden="true"></i>Ontology Overview</h2> 
+      </div>
+    </div>
+
+    <br>
+
+    <div class ="row" ng-show="isValueEmpty()">
+      <div class="col-xs-12">
+        <p> No result. Please Add Some Ontology Terms.
+      </div>
+    </div>
+
+    <div class ="row" ng-if="!isValueEmpty()">
+      <div class="col-xs-12">
+
+        <table id="overViewTable" class= "table table-fixed">
+
+          <thead>
+            
+            <th class="col-xs-3" style="padding: 10px 0px 10px;">Database</th>
+            <th class="col-xs-8" style="padding: 10px 0px 10px;">Ontology Term</th>
+            <th class="col-xs-1" style="padding: 10px 0px 10px;">Remove</th>
+
+          </thead>
+
+          <tbody>  
+            <tr ng-repeat-start="(database,listTerm) in value"> 
+              <tr ng-repeat-end ng-repeat="term in listTerm">
+                <td class="col-xs-3" style="padding: 20px 0px 10px;"> {{ database }}</td>
+                <td class="col-xs-8" style="padding: 20px 0px 10px;"> {{ term }}</td>
+                <td class="col-xs-1" style="padding: 20px 0px 10px;">
+                  <p data-placement="left" data-toggle="tooltip" title="Remove">
+                    <button class="btn btn-danger btn-xs" data-title="Remove" ng-click="removeOntology(database,term)">
+                      <span class="glyphicon glyphicon-trash"></span>
+                    </button>
+                  </p>
+                </td>
+              </tr>
+            </tr>
+          </tbody>
+
+        </table>
+
+      </div>
+    </div>
+
+  </div>
+
+  <div class="ngdialog-buttons mt pull-left" ng-show="viewOntology">
+    <button type="button" class="ngdialog-button ngdialog-button-primary" ng-click="onViewOntologyChange()"><i class="glyphicon glyphicon-chevron-left"></i></button>
+  </div>
+
+  <div class="ngdialog-buttons mt" ng-show="!viewOntology">
+    <button type="button" class="ngdialog-button ngdialog-button-primary" ng-click="onViewOntologyChange()"><i class="glyphicon glyphicon-chevron-right"></i></button>
+  </div>
+
+</script>
+
+
+
+<!-- !!!!!!!!!!!!!!!!!!!!! Template To Add Database For List Only !!!!!!!!!!!!!!!!!!!!!-->
+
+
+
+<script type="text/ng-template" id="Database">
+
+
+  <style>
+  .ngdialog.ngdialog-theme-flat .ngdialog-content {
+    border: 5px solid #0088cc;
+
+  }
+  .ngdialog.ngdialog-theme-flat .ngdialog-close:before {
+    background: #0088cc;
+  }
+  </style>
+
+  <div class="row">
+    <div class="col-xs-3"></div>
+    <div class="col-xs-6">
+       <h2> <i class="fa fa-search text-center" aria-hidden="true"></i>Database Search</h2>
+    </div>
+  </div>
+
+  <br>
+
+  <div ng-if="danger" class="alert alert-danger">
+    {{danger}}
+    <br>
+  </div>
+
+  <div ng-if="success" class="alert alert-success">
+    {{success}}
+    <br>
+  </div>
+
+  <div ng-if="warning" class="alert alert-warning">
+    {{warning}}
+    <br>
+  </div>
+
+  <div class= "row">
+    <div class="form-group">
+      <label class="control-label col-xs-5" for="select_DB_for_list" >Select Database</label>
+      <div class="col-xs-7">
+        <div class="input-group">
+          <ui-select  ng-model="DBDatabaseSelected.value"  theme="bootstrap" ng-change="removeGPLVersionSelected()">
+            <ui-select-match placeholder="Select or search a database in the list">{{DBDatabaseSelected.value.name}}</ui-select-match>
+            <ui-select-choices  repeat="item in (DBDatabaseArray | filter: $select.search) track by item.id">
+              <span   ng-bind-html="item.name | highlight: $select.search"></span>
+            </ui-select-choices>
+          </ui-select>
+          <span class="input-group-btn">
+            <button type="button" ng-click="removeDBDatabaseSelected()" class="btn btn-default">
+              <span class="glyphicon glyphicon-trash"></span>
+            </button>
+          </span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class= "row" ng-if="DBDatabaseSelected.value.name=='GPL'"> 
+    <div class="form-group">
+      <label class="control-label col-xs-5" for="select_GPL_version" >Select GPL Version</label>
+      <div class="col-xs-7">
+        <div class="input-group">
+          <ui-select  ng-model="GPLVersionSelected.value"  theme="bootstrap" ng-change="onGPLVersionSelected()">
+            <ui-select-match placeholder="Select or search a GPL version in the list">{{GPLVersionSelected.value.name}}</ui-select-match>
+            <ui-select-choices  repeat="item in (GPLVersionArray | filter: $select.search) track by item.id">
+              <span   ng-bind-html="item.name | highlight: $select.search"></span>
+            </ui-select-choices>
+          </ui-select>
+          <span class="input-group-btn">
+            <button type="button" ng-click="removeGPLVersionSelected()" class="btn btn-default">
+              <span class="glyphicon glyphicon-trash"></span>
+            </button>
+          </span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class= "row" ng-if="DBDatabaseSelected.value.name=='GPL' && GPLVersionSelected.value!=''"> 
+    <div class="form-group">
+      <label class="control-label col-xs-5" for="select_GPL_version" >Select GPL Number</label>
+      <div class="col-xs-7">
+        <div class="input-group">
+          <ui-select  ng-model="GPLNumberSelected.value"  theme="bootstrap" >
+            <ui-select-match placeholder="Select or search a GPL number in the list">{{GPLNumberSelected.value.name}}</ui-select-match>
+
+            <ui-select-choices  repeat="item in (GPLNumberArray | filter: $select.search) track by item.id | limitTo: 50">
+              <span   ng-bind-html="item.name | highlight: $select.search"></span>
+            </ui-select-choices>
+          </ui-select>
+          <span class="input-group-btn">
+            <button type="button" ng-click="removeGPLNumberSelected()" class="btn btn-default">
+              <span class="glyphicon glyphicon-trash"></span>
+            </button>
+          </span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <br>
+  <br>
+
+  <div class= "row" >
+    <div class="col-xs-12">
+      <div ng-disabled="!canSelect()" class ="btn btn-primary btn-block" ng-click="addDatabase()">
+        <i class="glyphicon glyphicon-plus"></i>
+        <span>Select</span>
+      </div>
+    </div>
+  </div>
+
+</script>
+
+<div ng-show="confirmation">
+
+</div>
+
+<style type="text/css">
+
+
+@mixin gray-stripe {
+background-size: 35px 35px;
+background-color: #EcEcEc;
+background-image: -webkit-linear-gradient(-45deg, rgba(255, 255, 255, .4) 25%, transparent 25%,transparent 50%, rgba(255, 255, 255, .4) 50%, rgba(255, 255, 255, .4) 75%,transparent 75%, transparent);
+background-image: -moz-linear-gradient(-45deg, rgba(255, 255, 255, .4) 25%, transparent 25%,transparent 50%, rgba(255, 255, 255, .4) 50%, rgba(255, 255, 255, .4) 75%,transparent 75%, transparent);
+}
+
+@mixin blue-stripe {
+background-size: 35px 35px;
+background-color: #57aed1;
+background-image: -webkit-linear-gradient(-45deg, rgba(255, 255, 255, .2) 25%, transparent 25%,transparent 50%, rgba(255, 255, 255, .2) 50%, rgba(255, 255, 255, .2) 75%,transparent 75%, transparent);
+background-image: -moz-linear-gradient(-45deg, rgba(255, 255, 255, .2) 25%, transparent 25%,transparent 50%, rgba(255, 255, 255, .2) 50%, rgba(255, 255, 255, .2) 75%,transparent 75%, transparent);
+
+}
+
+@mixin green-stripe {
+background-size: 35px 35px;
+background-color: #8bc53f;
+background-image: -webkit-linear-gradient(-45deg, rgba(255, 255, 255, .2) 25%, transparent 25%,transparent 50%, rgba(255, 255, 255, .2) 50%, rgba(255, 255, 255, .2) 75%,transparent 75%, transparent);
+background-image: -moz-linear-gradient(-45deg, rgba(255, 255, 255, .2) 25%, transparent 25%,transparent 50%, rgba(255, 255, 255, .2) 50%, rgba(255, 255, 255, .2) 75%,transparent 75%, transparent);
+}
+
+@mixin inner-shadow {
+-webkit-box-shadow: inset 2px 2px 2px 0px rgba(0, 0, 0, .2); box-shadow: inset 2px 2px 2px 0px rgba(0, 0, 0, .2);
+}
+@-webkit-keyframes myanimation {
+  from {
+    left: 0%;
+  }
+  to {
+    left: 50%;
+  }
+}
+
+
+.wellDimension {
+      width: 100%;
+/*      margin: 0px auto; 
+      margin-top: 120px;*/
+      padding: 19px;
+      /*margin-bottom: 20px;*/
+  }
+  .progressbar {
+      counter-reset: step;
+     @include inner-shadow;
+    background: #ccc;
+    width: 100%;
+    height: 15px;
+    border-radius:15px;
+    position:relative;
+    z-index: -2;
+  }
+  .progressbar li {
+      list-style-type: none;
+      width: 25%;
+      float: left;
+      font-size: 16px;
+      position: relative;
+      text-align: center;
+      text-transform: uppercase;
+      color: #7d7d7d;
+      margin-top: -10px;
+  }
+  .progressbar li:before {
+      width: 32px;
+      height: 32px;
+      content: counter(step);
+      counter-increment: step;
+      line-height: 32px;
+      border: 2px solid #7d7d7d;
+      display: block;
+      text-align: center;
+      margin: 0 auto 10px auto;
+      border-radius: 50%;
+      background-color: white;
+    z-index: 2;
+  }
+  .progressbar li:after {
+      width: 100%;
+      height: 4px;
+      content: '';
+      position: absolute;
+      background-color: #7d7d7d;
+      top: 16px;
+      left: -50%;
+      z-index: -1;
+  }
+  .progressbar li:first-child:after {
+      content: none;
+  }
+  .progressbar li.active {
+      color: green;
+  }
+  .progressbar li.active:before {
+      border-color: #55b776;
+  }
+  .progressbar li.active + li:after {
+      background-color: #55b776;
+  }
+</style>
+
+<style type="text/css">
+  $topDotColor: #F00;
+$bottomDotColor: #777;
+$dotSize: 6px;
+
+*, *:before, *:after {
+  margin: 0;
+  padding: 0;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+}
+
+
+
+.toto {
+  display: inline-block;
+  position: relative;
+}
+
+.dots {
+  display: inline-block;
+  position: relative;
+  vertical-align: middle;
+  
+  &:not(:last-child){
+    margin-right: $dotSize*1.5;
+  }
+  
+  &:before, &:after {
+    content: "";
+    display: inline-block;
+    width: $dotSize;
+    height: $dotSize;
+    border-radius: 50%;
+    
+    position: absolute;
+  }
+  
+  @for $i from 1 through 10 {
+    &:nth-child(#{$i}) {
+      &:before {
+        -webkit-transform: translateY(-200%);
+        transform: translateY(-200%);
+
+        -webkit-animation: animBefore 1s linear infinite;
+        animation: animBefore 1s linear infinite;
+        
+        -webkit-animation-delay: $i*-0.9s;
+        animation-delay: $i*-0.9s;
+
+        background-color: $topDotColor;
+      }
+
+      &:after {
+        -webkit-transform: translateY(200%);
+        transform: translateY(200%);
+
+        -webkit-animation: animAfter 1s linear infinite;
+        animation: animAfter 1s linear infinite;
+        
+        -webkit-animation-delay: $i*-0.9s;
+        animation-delay: $i*-0.9s;
+
+        background-color: $bottomDotColor;
+      }
+    }
+  }
+}
+
+@-webkit-keyframes animBefore {
+  0% {
+    -webkit-transform: scale(1) translateY(-200%);
+    z-index: 1;
+  }
+  
+  25% {
+    -webkit-transform: scale(1.3) translateY(0);
+    z-index: 1;
+  }
+  
+  50% {
+    -webkit-transform: scale(1) translateY(200%);
+    z-index: -1;
+  }
+  
+  75% {
+    -webkit-transform: scale(0.7) translateY(0);
+    z-index: -1;
+  }
+  
+  100% {
+    -webkit-transform: scale(1) translateY(-200%);
+    z-index: -1;
+  }
+}
+@keyframes animBefore {
+  0% {
+    transform: scale(1) translateY(-200%);
+    z-index: 1;
+  }
+  
+  25% {
+    transform: scale(1.3) translateY(0);
+    z-index: 1;
+  }
+  
+  50% {
+    transform: scale(1) translateY(200%);
+    z-index: -1;
+  }
+  
+  75% {
+    transform: scale(0.7) translateY(0);
+    z-index: -1;
+  }
+  
+  100% {
+    transform: scale(1) translateY(-200%);
+    z-index: -1;
+  }
+}
+@-webkit-keyframes animAfter {
+  0% {
+    -webkit-transform: scale(1) translateY(200%);
+    z-index: -1;
+  }
+  
+  25% {
+    -webkit-transform: scale(0.7) translateY(0);
+    z-index: -1;
+  }
+  
+  50% {
+    -webkit-transform: scale(1) translateY(-200%);
+    z-index: 1;
+  }
+  
+  75% {
+    -webkit-transform: scale(1.3) translateY(0);
+    z-index: 1;
+  }
+  
+  100% {
+    -webkit-transform: scale(1) translateY(200%);
+    z-index: 1;
+  }
+}
+@keyframes animAfter {
+  0% {
+    transform: scale(1) translateY(200%);
+    z-index: -1;
+  }
+  
+  25% {
+    transform: scale(0.7) translateY(0);
+    z-index: -1;
+  }
+  
+  50% {
+    transform: scale(1) translateY(-200%);
+    z-index: 1;
+  }
+  
+  75% {
+    transform: scale(1.3) translateY(0);
+    z-index: 1;
+  }
+  
+  100% {
+    transform: scale(1) translateY(200%);
+    z-index: 1;
+  }
+}
+</style> 

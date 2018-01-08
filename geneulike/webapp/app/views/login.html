@@ -1,0 +1,56 @@
+
+  <div class="well"'>
+    <div class="container">
+      <div class="row">
+      <div class="col-sm-4" >         
+              
+          <legend class ="formulaire" style="color:#357ebd">Try GeneULike without login</legend>
+            <button ng-click="loginDemo()" type="btn" class="btn btn-info btn-block" style="background-color: #4e91fd;">Login as Demo user</button>
+        </div>
+
+
+<div class="col-sm-2"></div>
+
+ <div class="col-sm-5">
+         <!-- dimension pour petit ecran ecran reduit(tablette) ecran moyen et grand ecran -->
+          <div ng-if="danger" class="alert alert-danger">
+            {{danger}}
+          </div>
+          <div ng-if="success" class="alert alert-success">
+            {{success}}
+          </div>
+          <div ng-if="warning" class="alert alert-warning">
+            {{warning}}
+          </div>
+          <legend class ="formulaire" style="color:#DF3F3F">Log in</legend>
+          <!-- <div class="alert alert-error">
+                <a class="close" data-dismiss="alert" href="#">×</a>Incorrect Username or Password!
+            </div> -->
+          <fieldset>
+            <form action="" id="loginForm">
+
+              <div class="form-group input-group">
+                <span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
+                <input ng-model="user.mail" id="email" placeholder="email" type="text" class="form-control">
+              </div>
+
+              <div class="form-group input-group">
+                <span class="input-group-addon"><i class="glyphicon glyphicon-lock"></i></span>
+                <input ng-model="user.password" id="password" type="password" placeholder="password" type="password" class="form-control">
+              </div>
+
+              <div class="form-group">
+                <button type="submit" ng-click="login(user)" ng-disabled="!user.mail || !user.password" class ="btn btn-default btn-block">Login</button>
+              </div>
+              <div class="form-group text-center">
+                <a href="#/recover">Forgot Password</a>&nbsp;|&nbsp;<a href="#">Support</a>
+              </div>
+            </form> 
+          </fieldset> 
+        </div>
+                
+        
+        </div>
+      </div>
+    </div>
+  </div>

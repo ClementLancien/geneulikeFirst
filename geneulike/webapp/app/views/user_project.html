@@ -1,0 +1,73 @@
+<!-- Begin User profile header -->
+<link href="bower_components/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+<h2>Projects overview</h2>
+
+<ul class="nav nav-tabs">
+  <li class="active"><a data-toggle="tab" href="#project" target="_self">Projets ({{project_number}})</a></li>
+  <li><a data-toggle="tab" href="#study" target="_self" ng-click="showStudies()">Studies ({{study_number}})</a></li>
+  <li><a data-toggle="tab" href="#strategy" target="_self" ng-click="showStrategies()">Strategies ({{strategy_number}})</a></li>
+  <li><a data-toggle="tab" href="#list" target="_self" ng-click="showLists()">Lists ({{list_number}})</a></li>
+  
+</ul>
+
+<div class="tab-content">
+  <div id="project" class="tab-pane fade in active">
+    <div ng-repeat='project in projects'>
+      <h3>{{project.project_id}} - {{project.title}}</h3>(<a href="#/browse?dataset={{project.project_id}}">view</a>)
+      <p><b>Description : </b>{{project.description}}</p>
+      <p><b>Description : </b>{{project.contributors}}</p>
+      <p><b>Studies : </b><span ng-repeat='study in project.studies_id.split()'>{{study}}<span></span></p>
+      <p><b>Strategies : </b><span ng-repeat='strategy in project.strategies_id.split()'>{{strategy}}<span></span></p>
+      <p><b>Lists : </b><span ng-repeat='list in project.lists_id.split()'>{{list}}</p>
+      <hr>
+    </div>
+    <button ng-click="back('projects')" class="btn btn-primary pull-left" ng-if="pfrom - 25 > 0">Back</button>
+    <button ng-click="more('projects')" class="btn btn-primary pull-right" ng-if="projects.length == 25">Next</button>
+  </div>
+  <div id="study" class="tab-pane fade">
+      <div ng-repeat='study in studies'>
+        <h3>{{study.studies_id}} - {{study.title}}</h3>(<a href="#/browse?dataset={{study.studies_id}}">view</a>)
+        <p><b>Description : </b>{{study.description}}</p>
+        <p><b>Phenotype / Desease : </b> {{study.phenotype_desease}}</p>
+        <p><b>Go term(s) : </b><span ng-repeat='term in study.go_term.split()'><p>{{term}}</p></b>
+        <p><b>Organism : </b> {{study.organism}}</p>
+        <p><b>Development stage : </b> {{study.development_stage}}</p>
+        <p><b>Project : </b>{{study.project_id}}</p>
+        <p><b>Strategies : </b><span ng-repeat='strategy in study.strategies_id.split()'>{{strategy}}<span></span></p>
+        <p><b>Lists : </b><span ng-repeat='list in study.lists_id.split()'>{{list}}<span></span></p>
+        <hr>
+      </div>
+      <button ng-click="back('studies')" class="btn btn-primary pull-left" ng-if="sfrom - 25 >= 0">Back</button>
+      <button ng-click="more('studies')" class="btn btn-primary pull-right" ng-if="studies.length == 25">Next</button>
+  </div>
+
+  <div id="strategy" class="tab-pane fade">
+      <div ng-repeat='strategy in strategies'>
+        <h3>{{strategy.strategies_id}} - {{strategy.title}}</h3>(<a href="#/browse?dataset={{strategy.strategies_id}}">view</a>)
+        <p><b>Description : </b>{{strategy.description}}</p>
+        <p><b>Type of Experiment : </b>{{strategy.type_of_experiment}}</p>
+        <p><b>Technology : </b>{{strategy.technology}}</p>
+        <p><b>Process : </b>{{strategy.process}}</p>
+        <p><b>Project : </b>{{strategy.project_id}}</p>
+        <p><b>Study : </b>{{strategy.studies_id}}</span></p>
+        <p><b>Lists : </b><span ng-repeat='list in strategy.lists_id.split()'>{{list}}<span></span></p>
+        <hr>
+      </div>
+      <button ng-click="back('strategies')" class="btn btn-primary pull-left" ng-if="afrom - 25 >= 0">Back</button>
+      <button ng-click="more('strategies')" class="btn btn-primary pull-right" ng-if="strategies.length == 25">Next</button>
+  </div>
+  <div id="list" class="tab-pane fade">
+    <div ng-repeat='list in lists'>
+
+        <h3>{{list.lists_id}} - {{list.title}}</h3>(<a href="#/browse?dataset={{list.lists_id}}">view</a>)
+        <p><b>Description : </b>{{list.description}}</p>
+        <p><b>Identifiers : </b>{{list.identifiers}}</p>
+        <p><b>Project : </b>{{list.project_id}}</p>
+        <p><b>Study : </b>{{list.studies_id}}</p>
+        <p><b>Strategy : </b>{{list.strategies_id}}</p>
+        <hr>
+      </div>
+      <button ng-click="back('lists')" class="btn btn-primary pull-left" ng-if="sgfrom - 25 >= 0">Back</button>
+      <button ng-click="more('lists')" class="btn btn-primary pull-right" ng-if="lists.length == 25">Next</button>
+  </div>
+</div>

@@ -1,0 +1,10 @@
+setup.py
+geneulike/__init__.py
+geneulike/views.py
+geneulike.egg-info/PKG-INFO
+geneulike.egg-info/SOURCES.txt
+geneulike.egg-info/dependency_links.txt
+geneulike.egg-info/entry_points.txt
+geneulike.egg-info/not-zip-safe
+geneulike.egg-info/requires.txt
+geneulike.egg-info/top_level.txt

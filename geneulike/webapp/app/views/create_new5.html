@@ -1,0 +1,51 @@
+    <link href="http://handsontable.com/bower_components/handsontable/dist/handsontable.full.css" rel="stylesheet" type="text/css">
+<!--     <script type="text/javascript" src="http://handsontable.com/bower_components/handsontable/dist/handsontable.full.js"></script>
+ -->    <!-- <script src="bower_components/handsontable/handsontable/dist/handsontable.full.js"></script> -->
+ <script src="test.js"></script>
+ <script src="handsontable/lib/jquery.min.js"></script>
+coucou
+    <div id="log"></div>
+    <div id="example"></div>
+    <code>
+      Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+    </code>
+
+
+
+    <script type="text/javascript">
+      document.getElementById('log').innerHTML = "Using Handsontable: " + Handsontable.version;
+
+      var data = [
+           { foo1: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.' },
+           { foo1: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.' },
+           { foo1: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.' },
+           { foo1: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.' }
+      ];
+
+      var container = document.getElementById('example');
+      var hot = new Handsontable(container, {
+        data: data,
+        rowHeaders: true,
+  minSpareRows: 1,
+  width: 500,
+  height: 450,
+  colHeaders: true,
+
+  columns: [
+        { data: 'foo1', width: 400 },
+        { data: 'foo2' },
+        { data: 'foo3' },
+        { data: 'foo4' },
+        { data: 'foo5' },
+        { data: 'foo6' },
+        { data: 'foo7' },
+        { data: 'foo8' },
+        { data: 'foo9' },
+        { data: 'foo10' },
+        { data: 'foo11' },
+        { data: 'foo12' },
+        { data: 'foo13' }
+      ]
+
+      });
+    </script>

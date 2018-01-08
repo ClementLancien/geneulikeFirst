@@ -1,0 +1,43 @@
+  <div class="well" >
+    <div class="container">
+      <div class="row">
+
+        <div class="col-sm-4 col-md-4 col-md-offset-4 col-lg-4" > <!-- dimension pour petit ecran ecran reduit(tablette) ecran moyen et grand ecran -->
+          <div ng-if="danger" class="alert alert-danger">
+            {{danger}}
+          </div>
+          <div ng-if="success" class="alert alert-success">
+            {{success}}
+          </div>
+          <div ng-if="warning" class="alert alert-warning">
+            {{warning}}
+          </div>
+          <legend class ="formulaire" style='color:green'>Password reset email</legend>
+          <!-- <div class="alert alert-error">
+                <a class="close" data-dismiss="alert" href="#">×</a>Incorrect Username or Password!
+            </div> -->
+            <fieldset>
+              <form action="" id="myForm">
+
+                <div class="form-group input-group">
+                  <span class="input-group-addon"><i class="glyphicon glyphicon-mail"></i></span>
+                  <input ng-model="userRecover.mail" id="email" placeholder="email" type="text" class="form-control" required />
+                </div>
+
+
+                <div class="form-group">
+                  <button type="submit" ng-click="recover(userRecover)" class ="btn btn-block btn-success" ng-disabled="!userRecover.mail">Send</button>
+                  <!--"btn btn-default btn-block"-->
+                </div>
+
+              </form>  
+            </fieldset>
+           
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+
+

@@ -1,0 +1,12 @@
+TemplateUpload.py permet de verifier si le fichier uplaod est conforme et si cest un fichier .xls
+
+reste a creer avec un fichier csv ou ajouter avec import csv
+
+il faut egalement creeer la class pour:
+
+	- sauvegarder le fichier(soit add to the db)
+	- dtabase_path???
+
+
+
+
